@@ -13,7 +13,16 @@
       "./mixins"
     ]
   },
-  "note": {
-    "dataSource": "db"
+  "Gift": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Donor": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Receiver": {
+    "dataSource": "db",
+    "public": true
   }
 }
