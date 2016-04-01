@@ -2,7 +2,12 @@ const async = require('async');
 const giftData = require('../../data/gifts.json');
 const receiverData = require('../../data/receivers.json');
 const donorData = require('../../data/donors.json');
+const _ = require('lodash');
 
+// max 100
+const NUMBER_OF_DONORS = 10;
+const NUMBER_OF_RECEIVERS = 25;
+const NUMBER_OF_GIFTS = 50;
 
 module.exports = function createSampleModels(app) {
   const mongoDS = app.datasources.mongoDS;
@@ -11,12 +16,12 @@ module.exports = function createSampleModels(app) {
   async.parallel({
     donors: async.apply(createDonors),
     receivers: async.apply(createReceivers)
-  }, createUsersCB);
+  }, usersCreated);
 
-  function createUsersCB(err, results) {
+  function usersCreated(err, results) {
     if (err) throw err;
 
-    createGifts(results.donors, results.receivers, function (err, gifts) {
+    createGifts(results.donors, results.receivers, (err, gifts) => {
       if (err) throw err;
 
       console.log('>', results.donors.length, 'Donor', 'models created successfully');
@@ -27,41 +32,41 @@ module.exports = function createSampleModels(app) {
 
 
   function createDonors(callback) {
-    mongoDS.automigrate('Donor', function (err) {
+    mongoDS.automigrate('Donor', err => {
       if (err) return callback(err);
       const Donor = app.models.Donor;
 
       console.log('> Migrating Donors');
 
 
-      Donor.create(donorData.slice(0, 15), callback);
+      Donor.create(_.sampleSize(donorData, NUMBER_OF_DONORS), callback);
     });
   }
 
   function createReceivers(callback) {
-    mongoDS.automigrate('Receiver', function (err) {
+    mongoDS.automigrate('Receiver', err => {
       if (err) return callback(err);
       const Receiver = app.models.Receiver;
 
       console.log('> Migrating Receivers');
 
-      Receiver.create(receiverData.slice(0, 50), callback);
+      Receiver.create(_.sampleSize(receiverData, NUMBER_OF_RECEIVERS), callback);
     });
   }
 
   function createGifts(donors, receivers, callback) {
-    mongoDS.automigrate('Gift', function (err) {
+    mongoDS.automigrate('Gift', err => {
       if (err) return callback(err);
       const Gift = app.models.Gift;
 
       console.log('> Migrating Gifts');
 
-      Gift.create(giftData.map(mapGifts), callback);
+      Gift.create(_.sampleSize(giftData, NUMBER_OF_GIFTS).map(mapGifts), callback);
 
       function mapGifts(gift) {
-        return Object.assign({}, gift, {
-          donorId: donors[ gift.donorId ].id,
-          receiverId: receivers[ gift.receiverId ].id
+        return _.merge({}, gift, {
+          donorId: _.sample(donors).id,
+          receiverId: _.sample(receivers).id,
         })
 
       }
