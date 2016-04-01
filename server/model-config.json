@@ -13,6 +13,25 @@
       "./mixins"
     ]
   },
+  "User": {
+    "dataSource": "mongoDS"
+  },
+  "AccessToken": {
+    "dataSource": "mongoDS",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "mongoDS",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "mongoDS",
+    "public": true
+  },
+  "Role": {
+    "dataSource": "mongoDS",
+    "public": true
+  },
   "Gift": {
     "dataSource": "mongoDS",
     "public": true,
