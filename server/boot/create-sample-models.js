@@ -4,8 +4,8 @@ const receiverData = require('../../data/receivers.json');
 const donorData = require('../../data/donors.json');
 
 
-module.exports = function createSampleModels(server) {
-  const mongoDS = server.datasources.mongoDS;
+module.exports = function createSampleModels(app) {
+  const mongoDS = app.datasources.mongoDS;
 
   // create donors and receivers;
   async.parallel({
@@ -29,7 +29,7 @@ module.exports = function createSampleModels(server) {
   function createDonors(callback) {
     mongoDS.automigrate('Donor', function (err) {
       if (err) return callback(err);
-      const Donor = server.models.Donor;
+      const Donor = app.models.Donor;
 
       console.log('> Migrating Donors');
 
@@ -41,7 +41,7 @@ module.exports = function createSampleModels(server) {
   function createReceivers(callback) {
     mongoDS.automigrate('Receiver', function (err) {
       if (err) return callback(err);
-      const Receiver = server.models.Receiver;
+      const Receiver = app.models.Receiver;
 
       console.log('> Migrating Receivers');
 
@@ -52,7 +52,7 @@ module.exports = function createSampleModels(server) {
   function createGifts(donors, receivers, callback) {
     mongoDS.automigrate('Gift', function (err) {
       if (err) return callback(err);
-      const Gift = server.models.Gift;
+      const Gift = app.models.Gift;
 
       console.log('> Migrating Gifts');
 
