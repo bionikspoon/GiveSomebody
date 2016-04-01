@@ -14,15 +14,17 @@
     ]
   },
   "Gift": {
-    "dataSource": "db",
-    "public": true
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
   },
   "Donor": {
-    "dataSource": "db",
+    "dataSource": "mongoDS",
     "public": true
   },
   "Receiver": {
-    "dataSource": "db",
+    "dataSource": "mongoDS",
     "public": true
   }
 }

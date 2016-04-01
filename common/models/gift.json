@@ -13,10 +13,75 @@
     "description": {
       "type": "string",
       "required": true
+    },
+    "reserved": {
+      "type": "boolean",
+      "required": true
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "donor": {
+      "type": "belongsTo",
+      "model": "Donor",
+      "foreignKey": ""
+    },
+    "receiver": {
+      "type": "belongsTo",
+      "model": "Receiver",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
-  "methods": {}
+  "methods": {
+    "listFree": {
+      "isStatic": true,
+      "accepts": [],
+      "returns": [
+        {
+          "arg": "gifts",
+          "type": "array",
+          "root": true,
+          "description": "List of available gifts"
+        }
+      ],
+      "description": "List all available gifts",
+      "http": [
+        {
+          "path": "/list-free",
+          "verb": "get"
+        }
+      ]
+    },
+    "isFree": {
+      "isStatic": true,
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true,
+          "description": "ID of gift"
+        }
+      ],
+      "returns": [
+        {
+          "arg": "response",
+          "type": "string",
+          "description": "Summary of availability"
+        },
+        {
+          "arg": "available",
+          "type": "boolean",
+          "description": "Gift is available"
+        }
+      ],
+      "description": "Check if gift is available",
+      "http": [
+        {
+          "path": "/is-free",
+          "verb": "post"
+        }
+      ]
+    }
+  }
 }
